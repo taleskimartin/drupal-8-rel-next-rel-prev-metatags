@@ -1,0 +1,79 @@
+<?php
+
+/**
+ * @param \Drupal\views\ViewExecutable $view
+ * @see hook_views_post_execute()
+ */
+/**
+ * Implements hook_page_attachments_alter().
+ */
+
+// <link rel="next"
+// <link rel="prev"
+function next_prev_attributes_page_attachments_alter(array &$attachments) {  
+global $pager_total, $pager_page_array;
+  $current_path = \Drupal\Core\Url::fromRoute('<current>');
+  $path = $current_path->toString();
+  if ($path == '/startseite') {
+    $path = '/';
+  }
+  if ($pager_page_array[0] == 1) {
+    $prev = '';
+  }
+  else {
+    $prev = '?page=' . $page = $pager_page_array[0] - 1;
+  }
+  if ($pager_page_array[0] == 0) {
+    $attachments['#attached']['html_head'][] = [[
+      '#type' => 'html_tag',
+      '#tag' => 'link',
+      '#attributes' => [
+        'rel' => 'next',
+        'href' => $path . '?page=' . $next = $pager_page_array[0]+1,
+      ],
+    ], 'rel_next_first'];
+  }
+  if ($pager_page_array[0] != 0 && $pager_page_array[0]+1 != $pager_total[0]) {
+    $attachments['#attached']['html_head'][] = [[
+      '#type' => 'html_tag',
+      '#tag' => 'link',
+      '#attributes' => [
+        'rel' => 'next',
+        'href' => $path . '?page=' . $next = $pager_page_array[0]+1,
+      ],
+    ], 'rel_next'];
+    $attachments['#attached']['html_head'][] = [[
+      '#type' => 'html_tag',
+      '#tag' => 'link',
+      '#attributes' => [
+        'rel' => 'prev',
+        'href' => $path . $prev,
+      ],
+    ], 'rel_prev'];
+  }
+  if ($pager_page_array[0]+1 == $pager_total[0]) {
+    $attachments['#attached']['html_head'][] = [[
+      '#type' => 'html_tag',
+      '#tag' => 'link',
+      '#attributes' => [
+        'rel' => 'prev',
+        'href' => $path . $prev,
+      ],
+    ], 'rel_prev_last'];
+  }
+  if ($pager_page_array[0] > 0) {
+    $attachments['#attached']['html_head'][] = [[
+      '#type' => 'html_tag',
+      '#tag' => 'link',
+      '#attributes' => [
+        'rel' => 'canonical',
+        'href' => $path . '?page=' . $pager_page_array[0],
+      ],
+    ], 'canonical_url'];
+  }
+  
+  // debug
+//  print '<pre>';
+//  print_r($pager_page_array[0]);
+//  print '</pre>';
+}

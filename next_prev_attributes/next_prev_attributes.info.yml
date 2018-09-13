@@ -1,0 +1,6 @@
+name: Next / Prev attributes
+description:  You can use the HTML attributes rel="next" and rel="prev" to indicate the relationship between individual URLs.
+package: Custom
+
+type: module
+core: 8.x
