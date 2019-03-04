@@ -14,9 +14,6 @@ function next_prev_attributes_page_attachments_alter(array &$attachments) {
 global $pager_total, $pager_page_array;
   $current_path = \Drupal\Core\Url::fromRoute('<current>');
   $path = $current_path->toString();
-  if ($path == '/startseite') {
-    $path = '/';
-  }
   if ($pager_page_array[0] == 1) {
     $prev = '';
   }
